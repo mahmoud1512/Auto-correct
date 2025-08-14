@@ -103,24 +103,35 @@ def substitution_cost(character1 , character2):
     
 
 
-def get_the_nearest_string(input_string, path_to_dataset):
+def get_the_nearest_strings(input_string, path_to_dataset):
     """
-    function to find the nearest string in the dataset to the input string
+    function to find the nearest 5 strings in the dataset to the input string
     :param input_string: string to be compared 
     :param dataset: list of strings to be compared against
     """
-    min_distance = float('inf')
-    nearest_string = None
-
+    min_distance = [float('inf') for _ in range(5)]
+    nearest_strings = [None for _ in range(5)]
+    
     with open(path_to_dataset, 'r') as file:
         dataset=[line.strip() for line in file]
 
     for data_string in dataset:
         distance = get_distance(input_string, data_string)
-        if distance < min_distance:
-            min_distance = distance
-            nearest_string = data_string
+        
+        # Check if this string is closer than the furthest in the top 5
+        if distance < min_distance[-1]:
+            # Insert this string into the top 5
+            for i in range(5):
+                if distance < min_distance[i]:
+                    # Shift down the rest of the list
+                    min_distance.insert(i, distance)
+                    nearest_strings.insert(i, data_string)
+                    # Keep only the top 5
+                    min_distance = min_distance[:5]
+                    nearest_strings = nearest_strings[:5]
+                    break
+    # get only unique strings
+    nearest_strings = list(dict.fromkeys(nearest_strings))
+    return nearest_strings
 
-    return nearest_string, min_distance
-
-print(get_the_nearest_string("hllo", "Edit-Distance\google-10000-english-no-swears.txt")[0])
+# print(get_the_nearest_strings("str", "google-10000-english-no-swears.txt"))
