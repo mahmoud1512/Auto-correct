@@ -97,7 +97,7 @@ def substitution_cost(character1 , character2):
         if pos1 == (-1, -1) or pos2 == (-1, -1):
             return float('inf') # characters not found in keyboard
         
-        return ((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2) ** 0.5
+        return ((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2) ** 0.5  # Euclidean distance
     
 
 
