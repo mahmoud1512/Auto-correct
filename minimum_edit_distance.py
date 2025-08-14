@@ -4,6 +4,8 @@ def get_distance(input_string,data_string):
     :param input_string: string to be compared 
     :param data_string: string to be compared against (will be from the dataset)
     """
+    input_string = input_string.lower()
+    data_string = data_string.lower()   
     input_string_length = len(input_string)
     data_string_length = len(data_string)
 
@@ -101,3 +103,24 @@ def substitution_cost(character1 , character2):
     
 
 
+def get_the_nearest_string(input_string, path_to_dataset):
+    """
+    function to find the nearest string in the dataset to the input string
+    :param input_string: string to be compared 
+    :param dataset: list of strings to be compared against
+    """
+    min_distance = float('inf')
+    nearest_string = None
+
+    with open(path_to_dataset, 'r') as file:
+        dataset=[line.strip() for line in file]
+
+    for data_string in dataset:
+        distance = get_distance(input_string, data_string)
+        if distance < min_distance:
+            min_distance = distance
+            nearest_string = data_string
+
+    return nearest_string, min_distance
+
+print(get_the_nearest_string("hllo", "Edit-Distance\google-10000-english-no-swears.txt")[0])
